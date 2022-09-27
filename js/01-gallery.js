@@ -28,14 +28,21 @@ gelleryPictyresItem.addEventListener('click', (evt) => {
 		return;
 	}
 	const activImage = evt.target.dataset.source;
-	const instance = basicLightbox.create(`
-    <img src="${activImage}" width="800" height="600">
-`);
+	const instance = basicLightbox.create(
+		`<img src="${activImage}" width="800" height="600">`,
+		{
+			onShow: () => {
+				document.addEventListener('keydown', onEsc);
+			},
+			onClose: () => {
+				document.removeEventListener('keydown', onEsc);
+			}
+		}
+	);
 	instance.show();
-
-	gelleryPictyresItem.addEventListener('keydown', (evt) => {
+	function onEsc(evt) {
 		if (evt.key === 'Escape') {
 			instance.close();
 		}
-	});
+	}
 });
